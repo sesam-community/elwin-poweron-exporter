@@ -22,9 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * Main app controller
+ * Main app controller, all request from Sesam maps here
  *
- * @author TImur Samkharadze
+ * @author Timur Samkharadze
  */
 @RestController
 public class RequestProcessor {

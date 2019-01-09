@@ -14,7 +14,6 @@ import io.sesam.fredrikstad.demo.models.PhoneNumber;
 import io.sesam.fredrikstad.demo.models.Property;
 import io.sesam.fredrikstad.demo.models.PropertyClassification;
 import java.util.List;
-import java.util.logging.Level;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -81,6 +80,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                 new SoapActionCallback("Customer/EmailAddresses"));
         EmailAddressesResponseStc innerRes = res.getEmailAddressesResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
 
     }
 
@@ -124,6 +126,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                         new SoapActionCallback("Customer/ConnectionAgreements"));
         ConnectionAgreementsResponseStc innerRes = res.getConnectionAgreementsResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     public void processCustomerPropertyAssociations(List<CustomerPropertyAssociation> input) {
@@ -151,6 +156,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                 new SoapActionCallback("Customer/Customers"));
         CustomersResponseStc innerRes = res.getCustomersResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     public void processCustomerClassifications(List<CustomerClassification> input) {
@@ -201,5 +209,15 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      */
     private XMLGregorianCalendar parseDateStringToXmlGregorianCalendar(String date, String format) throws DatatypeConfigurationException {
         return DatatypeFactory.newInstance().newXMLGregorianCalendar(date);
+    }
+
+    /**
+     * function to check power on response status code
+     *
+     * @param i PowerOn status code as int
+     * @return boolean true if status not equal to success code (which is 0)
+     */
+    private boolean isNotOk(int i) {
+        return i != 0;
     }
 }

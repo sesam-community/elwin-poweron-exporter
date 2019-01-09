@@ -1,5 +1,6 @@
 package io.sesam.fredrikstad.demo.soap;
 
+import io.sesam.fredrikstad.demo.AppConfig;
 import io.sesam.fredrikstad.demo.models.Address;
 import io.sesam.fredrikstad.demo.models.ConnectionAgreement;
 import io.sesam.fredrikstad.demo.models.Customer;
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -49,9 +51,11 @@ import poweron.wsdl.ObjectFactory;
 @Component
 public class PowerOnSoapClient extends WebServiceGatewaySupport {
 
+    @Autowired
+    AppConfig config;
+
     private static final ObjectFactory FACTORY = new ObjectFactory();
     private static final Logger LOG = LoggerFactory.getLogger(PowerOnSoapClient.class);
-    private static final String URL = "http://172.28.83.61/enmac/SOAP";
 
     /**
      *
@@ -76,7 +80,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
 
         WebServiceTemplate template = buildWebServiceTemplate();
 
-        EmailAddressesResponse res = (EmailAddressesResponse) template.marshalSendAndReceive(URL, soapMessage,
+        EmailAddressesResponse res = (EmailAddressesResponse) template.marshalSendAndReceive(config.getUrl(), soapMessage,
                 new SoapActionCallback("Customer/EmailAddresses"));
         EmailAddressesResponseStc innerRes = res.getEmailAddressesResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
@@ -122,7 +126,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         connectionAgreements.setConnectionAgreementsStc(connectionAgreementsStc);
         WebServiceTemplate template = buildWebServiceTemplate();
         ConnectionAgreementsResponse res
-                = (ConnectionAgreementsResponse) template.marshalSendAndReceive(URL, connectionAgreements,
+                = (ConnectionAgreementsResponse) template.marshalSendAndReceive(config.getUrl(), connectionAgreements,
                         new SoapActionCallback("Customer/ConnectionAgreements"));
         ConnectionAgreementsResponseStc innerRes = res.getConnectionAgreementsResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
@@ -152,7 +156,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         customersStc.setCustomerList(customerListStc);
         customers.setCustomersStc(customersStc);
         WebServiceTemplate template = buildWebServiceTemplate();
-        CustomersResponse res = (CustomersResponse) template.marshalSendAndReceive(URL, customers,
+        CustomersResponse res = (CustomersResponse) template.marshalSendAndReceive(config.getUrl(), customers,
                 new SoapActionCallback("Customer/Customers"));
         CustomersResponseStc innerRes = res.getCustomersResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());

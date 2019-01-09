@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="Customer" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="Customer" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="Customer">
+      <s:element name="CustomerTypes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomerTypesStc" type="tns:CustomerTypesStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerTypesStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerTypesList" type="tns:CustomerTypesListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerTypesListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomerTypeStc" type="tns:CustomerTypeItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerTypeItemStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CTCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CTName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SensitiveFlag" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SensitiveLevel" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerTypesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomerTypesResponseStc" type="tns:CustomerTypesResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerTypesResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Addresses">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddressesStc" type="tns:AddressesStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AddressesStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AddressList" type="tns:AddressListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AddressListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AddressStc" type="tns:AddressItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AddressItemStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AddressNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AFTCode" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdministrativeAreaName" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GeoPosition" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GridReference" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocalityName" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocationDescription" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LotNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PlanNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Postcode" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PrimaryAddressableObject" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="QSTCode" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SecondaryAddressableObject" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StreetName" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TownName" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddressesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddressesResponseStc" type="tns:AddressesResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AddressesResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ConnectionAgreements">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ConnectionAgreementsStc" type="tns:ConnectionAgreementsStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ConnectionAgreementsStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ConnectionAgreementList" type="tns:ConnectionAgreementListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ConnectionAgreementListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ConnectionAgreementStc" type="tns:ConnectionAgreementItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ConnectionAgreementItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AgreementStartDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CapsisReference" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NoticeToDeenergise" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ConnectionAgreementsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ConnectionAgreementsResponseStc" type="tns:ConnectionAgreementsResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ConnectionAgreementsResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Customers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomersStc" type="tns:CustomersStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomersStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerList" type="tns:CustomerListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomerStc" type="tns:CustomerItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AdditionalInformation" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BillingPropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactPropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerID" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ForeNames" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreeText" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Initials" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationMethod" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PersonalNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="QSTCode" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Salutation" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SndxName" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Retailer" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomersResponseStc" type="tns:CustomersResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomersResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerClassifications">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomerClassificationsStc" type="tns:CustomerClassificationsStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerClassificationsStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerClassificationList" type="tns:CustomerClassificationListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerClassificationListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomerClassificationStc" type="tns:CustomerClassificationItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerClassificationItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AdditionalInfo" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CTCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldCTCode" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerClassificationsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomerClassificationsResponseStc" type="tns:CustomerClassificationsResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerClassificationsResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PropertyClassifications">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PropertyClassificationsStc" type="tns:PropertyClassificationsStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PropertyClassificationsStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyClassificationList" type="tns:PropertyClassificationListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyClassificationListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PropertyClassificationStc" type="tns:PropertyClassificationItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyClassificationItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PTCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldPTCode" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PropertyClassificationsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PropertyClassificationsResponseStc" type="tns:PropertyClassificationsResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PropertyClassificationsResponseStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerPropertyAssociations">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomerPropertyAssociationsStc" type="tns:CustomerPropertyAssociationsStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerPropertyAssociationsStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerPropertyAssociationList" type="tns:CustomerPropertyAssociationListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerPropertyAssociationListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CustomerPropertyAssociationStc" type="tns:CustomerPropertyAssociationItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerPropertyAssociationItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ATCode" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessSource" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LinkAddressReference" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LinkReference" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LinkSystem" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UsageEndDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UsageStartDate" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CustomerPropertyAssociationsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CustomerPropertyAssociationsResponseStc" type="tns:CustomerPropertyAssociationsResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CustomerPropertyAssociationsResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EmailAddresses">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EmailAddressesStc" type="tns:EmailAddressesStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmailAddressesStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EmailAddressList" type="tns:EmailAddressListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmailAddressListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmailAddressStc" type="tns:EmailAddressItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmailAddressItemStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EmailAddress" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldEmailAddress" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EmailAddressesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EmailAddressesResponseStc" type="tns:EmailAddressesResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmailAddressesResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FaxNumbers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FaxNumbersStc" type="tns:FaxNumbersStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FaxNumbersStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="FaxNumberList" type="tns:FaxNumberListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FaxNumberListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FaxNumberStc" type="tns:FaxNumberItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FaxNumberItemStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="FaxNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldFaxNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FaxNumbersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FaxNumbersResponseStc" type="tns:FaxNumbersResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FaxNumbersResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NetworkPropertyLinks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NetworkPropertyLinksStc" type="tns:NetworkPropertyLinksStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NetworkPropertyLinksStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NetworkPropertyLinkList" type="tns:NetworkPropertyLinkListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UpdateSource" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NetworkPropertyLinkListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NetworkPropertyLinkStc" type="tns:NetworkPropertyLinkItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NetworkPropertyLinkItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ComponentAlias" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Confidence" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerVoltage" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalReference" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FeederNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FeedQualityID" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LVCableID" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NetworkStatus" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phase" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RetailStatus" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubQualityID" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SupplyState" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NetworkPropertyLinksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NetworkPropertyLinksResponseStc" type="tns:NetworkPropertyLinksResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NetworkPropertyLinksResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Properties">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PropertiesStc" type="tns:PropertiesStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PropertiesStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyList" type="tns:PropertyListStc" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PropertyStc" type="tns:PropertyItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyItemStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AddressNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Directions" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Hazards" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PropertiesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PropertiesResponseStc" type="tns:PropertiesResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PropertiesResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SpecialClassifications">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SpecialClassificationsStc" type="tns:SpecialClassificationsStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SpecialClassificationsStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialClassificationList" type="tns:SpecialClassificationListStc" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SpecialClassificationListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SpecialClassificationStc" type="tns:SpecialClassificationItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SpecialClassificationItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Category" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Company" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactAddress" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactEmailAddress" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactFaxNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactName" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactTelephoneNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialClass" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SpecialProcedure" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SpecialClassificationsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SpecialClassificationsResponseStc" type="tns:SpecialClassificationsResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SpecialClassificationsResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TelephoneNumbers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TelephoneNumbersStc" type="tns:TelephoneNumbersStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TelephoneNumbersStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TelephoneNumberList" type="tns:TelephoneNumberListStc" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TelephoneNumberListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TelephoneNumberStc" type="tns:TelephoneNumberItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TelephoneNumberItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OldTelephoneNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TelephoneNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UsageEndDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UsageStartDate" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TelephoneNumbersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TelephoneNumbersResponseStc" type="tns:TelephoneNumbersResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TelephoneNumbersResponseStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorMsg" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MeterNumbers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="MeterNumbersStc" type="tns:MeterNumbersStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MeterNumbersStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="MeterNumberList" type="tns:MeterNumberListStc" />
+          <s:element minOccurs="1" maxOccurs="1" name="OperationType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RealTime" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SequenceNumber" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MeterNumberListStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MeterNumberStc" type="tns:MeterNumberItemStc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MeterNumberItemStc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IsSmartMeter" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MeterIndicator" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MeterNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MeterSource" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NetworkTariff" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldMeterNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PropertyNumber" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RelayChannel" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MeterNumbersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="MeterNumbersResponseStc" type="tns:MeterNumbersResponseStc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MeterNumbersResponseStc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="transaction_errors" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CustomerTypesSoapIn">
+    <wsdl:part name="parameters" element="tns:CustomerTypes" />
+  </wsdl:message>
+  <wsdl:message name="CustomerTypesSoapOut">
+    <wsdl:part name="parameters" element="tns:CustomerTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddressesSoapIn">
+    <wsdl:part name="parameters" element="tns:Addresses" />
+  </wsdl:message>
+  <wsdl:message name="AddressesSoapOut">
+    <wsdl:part name="parameters" element="tns:AddressesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConnectionAgreementsSoapIn">
+    <wsdl:part name="parameters" element="tns:ConnectionAgreements" />
+  </wsdl:message>
+  <wsdl:message name="ConnectionAgreementsSoapOut">
+    <wsdl:part name="parameters" element="tns:ConnectionAgreementsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CustomersSoapIn">
+    <wsdl:part name="parameters" element="tns:Customers" />
+  </wsdl:message>
+  <wsdl:message name="CustomersSoapOut">
+    <wsdl:part name="parameters" element="tns:CustomersResponse" />
+  </wsdl:message>
+  <wsdl:message name="CustomerClassificationsSoapIn">
+    <wsdl:part name="parameters" element="tns:CustomerClassifications" />
+  </wsdl:message>
+  <wsdl:message name="CustomerClassificationsSoapOut">
+    <wsdl:part name="parameters" element="tns:CustomerClassificationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PropertyClassificationsSoapIn">
+    <wsdl:part name="parameters" element="tns:PropertyClassifications" />
+  </wsdl:message>
+  <wsdl:message name="PropertyClassificationsSoapOut">
+    <wsdl:part name="parameters" element="tns:PropertyClassificationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CustomerPropertyAssociationsSoapIn">
+    <wsdl:part name="parameters" element="tns:CustomerPropertyAssociations" />
+  </wsdl:message>
+  <wsdl:message name="CustomerPropertyAssociationsSoapOut">
+    <wsdl:part name="parameters" element="tns:CustomerPropertyAssociationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="EmailAddressesSoapIn">
+    <wsdl:part name="parameters" element="tns:EmailAddresses" />
+  </wsdl:message>
+  <wsdl:message name="EmailAddressesSoapOut">
+    <wsdl:part name="parameters" element="tns:EmailAddressesResponse" />
+  </wsdl:message>
+  <wsdl:message name="FaxNumbersSoapIn">
+    <wsdl:part name="parameters" element="tns:FaxNumbers" />
+  </wsdl:message>
+  <wsdl:message name="FaxNumbersSoapOut">
+    <wsdl:part name="parameters" element="tns:FaxNumbersResponse" />
+  </wsdl:message>
+  <wsdl:message name="NetworkPropertyLinksSoapIn">
+    <wsdl:part name="parameters" element="tns:NetworkPropertyLinks" />
+  </wsdl:message>
+  <wsdl:message name="NetworkPropertyLinksSoapOut">
+    <wsdl:part name="parameters" element="tns:NetworkPropertyLinksResponse" />
+  </wsdl:message>
+  <wsdl:message name="PropertiesSoapIn">
+    <wsdl:part name="parameters" element="tns:Properties" />
+  </wsdl:message>
+  <wsdl:message name="PropertiesSoapOut">
+    <wsdl:part name="parameters" element="tns:PropertiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SpecialClassificationsSoapIn">
+    <wsdl:part name="parameters" element="tns:SpecialClassifications" />
+  </wsdl:message>
+  <wsdl:message name="SpecialClassificationsSoapOut">
+    <wsdl:part name="parameters" element="tns:SpecialClassificationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="TelephoneNumbersSoapIn">
+    <wsdl:part name="parameters" element="tns:TelephoneNumbers" />
+  </wsdl:message>
+  <wsdl:message name="TelephoneNumbersSoapOut">
+    <wsdl:part name="parameters" element="tns:TelephoneNumbersResponse" />
+  </wsdl:message>
+  <wsdl:message name="MeterNumbersSoapIn">
+    <wsdl:part name="parameters" element="tns:MeterNumbers" />
+  </wsdl:message>
+  <wsdl:message name="MeterNumbersSoapOut">
+    <wsdl:part name="parameters" element="tns:MeterNumbersResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CustomerSoap">
+    <wsdl:operation name="CustomerTypes">
+      <wsdl:input message="tns:CustomerTypesSoapIn" />
+      <wsdl:output message="tns:CustomerTypesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Addresses">
+      <wsdl:input message="tns:AddressesSoapIn" />
+      <wsdl:output message="tns:AddressesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConnectionAgreements">
+      <wsdl:input message="tns:ConnectionAgreementsSoapIn" />
+      <wsdl:output message="tns:ConnectionAgreementsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Customers">
+      <wsdl:input message="tns:CustomersSoapIn" />
+      <wsdl:output message="tns:CustomersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CustomerClassifications">
+      <wsdl:input message="tns:CustomerClassificationsSoapIn" />
+      <wsdl:output message="tns:CustomerClassificationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PropertyClassifications">
+      <wsdl:input message="tns:PropertyClassificationsSoapIn" />
+      <wsdl:output message="tns:PropertyClassificationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CustomerPropertyAssociations">
+      <wsdl:input message="tns:CustomerPropertyAssociationsSoapIn" />
+      <wsdl:output message="tns:CustomerPropertyAssociationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EmailAddresses">
+      <wsdl:input message="tns:EmailAddressesSoapIn" />
+      <wsdl:output message="tns:EmailAddressesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FaxNumbers">
+      <wsdl:input message="tns:FaxNumbersSoapIn" />
+      <wsdl:output message="tns:FaxNumbersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NetworkPropertyLinks">
+      <wsdl:input message="tns:NetworkPropertyLinksSoapIn" />
+      <wsdl:output message="tns:NetworkPropertyLinksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Properties">
+      <wsdl:input message="tns:PropertiesSoapIn" />
+      <wsdl:output message="tns:PropertiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SpecialClassifications">
+      <wsdl:input message="tns:SpecialClassificationsSoapIn" />
+      <wsdl:output message="tns:SpecialClassificationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TelephoneNumbers">
+      <wsdl:input message="tns:TelephoneNumbersSoapIn" />
+      <wsdl:output message="tns:TelephoneNumbersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MeterNumbers">
+      <wsdl:input message="tns:MeterNumbersSoapIn" />
+      <wsdl:output message="tns:MeterNumbersSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomerSoap" type="tns:CustomerSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CustomerTypes">
+      <soap:operation soapAction="Customer/CustomerTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Addresses">
+      <soap:operation soapAction="Customer/Addresses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConnectionAgreements">
+      <soap:operation soapAction="Customer/ConnectionAgreements" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customers">
+      <soap:operation soapAction="Customer/Customers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CustomerClassifications">
+      <soap:operation soapAction="Customer/CustomerClassifications" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PropertyClassifications">
+      <soap:operation soapAction="Customer/PropertyClassifications" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CustomerPropertyAssociations">
+      <soap:operation soapAction="Customer/CustomerPropertyAssociations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailAddresses">
+      <soap:operation soapAction="Customer/EmailAddresses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FaxNumbers">
+      <soap:operation soapAction="Customer/FaxNumbers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NetworkPropertyLinks">
+      <soap:operation soapAction="Customer/NetworkPropertyLinks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Properties">
+      <soap:operation soapAction="Customer/Properties" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialClassifications">
+      <soap:operation soapAction="Customer/SpecialClassifications" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TelephoneNumbers">
+      <soap:operation soapAction="Customer/TelephoneNumbers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MeterNumbers">
+      <soap:operation soapAction="Customer/MeterNumbers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CustomerSoap12" type="tns:CustomerSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CustomerTypes">
+      <soap12:operation soapAction="Customer/CustomerTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Addresses">
+      <soap12:operation soapAction="Customer/Addresses" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConnectionAgreements">
+      <soap12:operation soapAction="Customer/ConnectionAgreements" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customers">
+      <soap12:operation soapAction="Customer/Customers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CustomerClassifications">
+      <soap12:operation soapAction="Customer/CustomerClassifications" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PropertyClassifications">
+      <soap12:operation soapAction="Customer/PropertyClassifications" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CustomerPropertyAssociations">
+      <soap12:operation soapAction="Customer/CustomerPropertyAssociations" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailAddresses">
+      <soap12:operation soapAction="Customer/EmailAddresses" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FaxNumbers">
+      <soap12:operation soapAction="Customer/FaxNumbers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NetworkPropertyLinks">
+      <soap12:operation soapAction="Customer/NetworkPropertyLinks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Properties">
+      <soap12:operation soapAction="Customer/Properties" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialClassifications">
+      <soap12:operation soapAction="Customer/SpecialClassifications" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TelephoneNumbers">
+      <soap12:operation soapAction="Customer/TelephoneNumbers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MeterNumbers">
+      <soap12:operation soapAction="Customer/MeterNumbers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Customer">
+    <wsdl:port name="CustomerSoap" binding="tns:CustomerSoap">
+      <soap:address location="http://localhost:62095/SOAPInBound/Customer.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CustomerSoap12" binding="tns:CustomerSoap12">
+      <soap12:address location="http://localhost:62095/SOAPInBound/Customer.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

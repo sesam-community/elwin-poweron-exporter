@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class RequestProcessor {
 
-    @Autowired
-    PowerOnSoapClient wsClient;
-
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessor.class);
     private static final String CT = "application/json";
+
+    @Autowired
+    PowerOnSoapClient wsClient;
 
     /**
      * REST endpoint for elwin-to-power-on-addresses pipe
@@ -54,6 +54,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-connection-agreements pipe
+     *
      * @param input list of ConnectionAgreement objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -70,6 +71,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-customer-property-associations pipe
+     *
      * @param input list of CustomerPropertyAssociation objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -86,6 +88,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-customer pipe
+     *
      * @param input list of Customer objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -102,6 +105,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-customer-classifications pipe
+     *
      * @param input list of CustomerClassification objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -118,6 +122,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-email-addresses pipe
+     *
      * @param input list of EmailAddress objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -134,6 +139,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-meter-no pipe
+     *
      * @param input list of MeterNumber objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -150,6 +156,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-properties pipe
+     *
      * @param input list of Property objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -166,6 +173,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-property-classifications pipe
+     *
      * @param input list of PropertyClassification objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -182,6 +190,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-telephone-numbers pipe
+     *
      * @param input list of PhoneNumber objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */
@@ -198,6 +207,7 @@ public class RequestProcessor {
 
     /**
      * REST endpoint for elwin-to-power-on-network-property-lLinks pipe
+     *
      * @param input list of NetworkPropertyLink objects each containg pipe output entity
      * @return altered input list with status message for every entity
      */

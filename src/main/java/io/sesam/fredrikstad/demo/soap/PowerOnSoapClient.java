@@ -64,11 +64,11 @@ import poweron.wsdl.ObjectFactory;
 @Component
 public class PowerOnSoapClient extends WebServiceGatewaySupport {
 
-    @Autowired
-    AppConfig config;
-
     private static final ObjectFactory FACTORY = new ObjectFactory();
     private static final Logger LOG = LoggerFactory.getLogger(PowerOnSoapClient.class);
+
+    @Autowired
+    AppConfig config;
 
     /**
      * Insert/update email addresses

@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author 100tsa
  */
 public class SesamEntity {
-    
+
     @JsonProperty("_id")
     private String id;
-    
+
     @JsonProperty("_deleted")
     private boolean deleted;
-    
+
     private String status;
 
     public SesamEntity() {
@@ -42,6 +42,10 @@ public class SesamEntity {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "SesamEntity{" + "id=" + id + ", deleted=" + deleted + ", status=" + status + '}';
+    }
+
 }

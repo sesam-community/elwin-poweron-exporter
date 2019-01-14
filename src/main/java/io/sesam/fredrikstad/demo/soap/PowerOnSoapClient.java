@@ -38,6 +38,12 @@ import poweron.wsdl.ConnectionAgreementsResponseStc;
 import poweron.wsdl.ConnectionAgreementsStc;
 import poweron.wsdl.CustomerItemStc;
 import poweron.wsdl.CustomerListStc;
+import poweron.wsdl.CustomerPropertyAssociationItemStc;
+import poweron.wsdl.CustomerPropertyAssociationListStc;
+import poweron.wsdl.CustomerPropertyAssociations;
+import poweron.wsdl.CustomerPropertyAssociationsResponse;
+import poweron.wsdl.CustomerPropertyAssociationsResponseStc;
+import poweron.wsdl.CustomerPropertyAssociationsStc;
 import poweron.wsdl.Customers;
 import poweron.wsdl.CustomersResponse;
 import poweron.wsdl.CustomersResponseStc;
@@ -194,7 +200,60 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processCustomerPropertyAssociations(List<CustomerPropertyAssociation> input) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        CustomerPropertyAssociations customerPropertyAssociations = FACTORY.createCustomerPropertyAssociations();
+        CustomerPropertyAssociationsStc customerPropertyAssociationsStc = FACTORY.createCustomerPropertyAssociationsStc();
+        customerPropertyAssociationsStc.setOperationType("I");
+        CustomerPropertyAssociationListStc customerPropertyAssociationListStc = FACTORY.createCustomerPropertyAssociationListStc();
+        List<CustomerPropertyAssociationItemStc> customerPropertyAssociationStc = customerPropertyAssociationListStc.getCustomerPropertyAssociationStc();
+
+        input.stream().map((inCustPropAssoc) -> {
+            CustomerPropertyAssociationItemStc item = FACTORY.createCustomerPropertyAssociationItemStc();
+            item.setCustomerNumber(inCustPropAssoc.getCustomerNumber());
+            item.setPropertyNumber(inCustPropAssoc.getPropertyNumber());
+            item.setATCode(FACTORY.createCustomerPropertyAssociationItemStcATCode(inCustPropAssoc.getAtCode()));
+            if (!inCustPropAssoc.getUsageStartDate().isEmpty()) {
+                try {
+                    item.setUsageStartDate(FACTORY.createCustomerPropertyAssociationItemStcUsageStartDate(
+                            this.parseDateStringToXmlGregorianCalendar(inCustPropAssoc.getUsageStartDate(), null)));
+                } catch (DatatypeConfigurationException ex) {
+                    LOG.warn("Couldn't parse date {} to XMLGregorianCalendar", inCustPropAssoc.getUsageStartDate());
+                    LOG.warn(ex.getMessage());
+                }
+            }
+            if (!inCustPropAssoc.getUsageEndDate().isEmpty()) {
+                try {
+                    item.setUsageEndDate(FACTORY.createCustomerPropertyAssociationItemStcUsageEndDate(
+                            this.parseDateStringToXmlGregorianCalendar(inCustPropAssoc.getUsageEndDate(), null)));
+                } catch (DatatypeConfigurationException ex) {
+                    LOG.warn("Couldn't parse date {} to XMLGregorianCalendar", inCustPropAssoc.getUsageStartDate());
+                    LOG.warn(ex.getMessage());
+                }
+            }
+            item.setLinkReference(FACTORY.createCustomerPropertyAssociationItemStcLinkAddressReference(
+                    inCustPropAssoc.getLinkReference()));
+            item.setLinkSystem(FACTORY.createCustomerPropertyAssociationItemStcLinkSystem(
+                    inCustPropAssoc.getLinkSystem()));
+            item.setBusinessSource(FACTORY.createCustomerPropertyAssociationItemStcBusinessSource(
+                    inCustPropAssoc.getBusinessSource()));
+            item.setLinkAddressReference(FACTORY.createCustomerPropertyAssociationItemStcLinkAddressReference(
+                    inCustPropAssoc.getLinkAddressReference()));
+            return item;
+        }).forEachOrdered((item) -> {
+            customerPropertyAssociationStc.add(item);
+        });
+        customerPropertyAssociationsStc.setCustomerPropertyAssociationList(customerPropertyAssociationListStc);
+        customerPropertyAssociations.setCustomerPropertyAssociationsStc(customerPropertyAssociationsStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        CustomerPropertyAssociationsResponse res
+                = (CustomerPropertyAssociationsResponse) template.marshalSendAndReceive(
+                        config.getUrl(), customerPropertyAssociations,
+                        new SoapActionCallback("Customer/CustomerPropertyAssociations"));
+        CustomerPropertyAssociationsResponseStc innerRes = res.getCustomerPropertyAssociationsResponseStc();
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     /**

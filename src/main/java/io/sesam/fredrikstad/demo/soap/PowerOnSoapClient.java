@@ -268,13 +268,15 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         CustomerListStc customerListStc = FACTORY.createCustomerListStc();
         List<CustomerItemStc> customerList = customerListStc.getCustomerStc();
 
-        for (Customer customer : input) {
+        input.stream().map((customer) -> {
             CustomerItemStc item = FACTORY.createCustomerItemStc();
             item.setCustomerNumber(customer.getCustomerNumber());
             item.setForeNames(FACTORY.createCustomerItemStcForeNames(customer.getForeName()));
             item.setName(FACTORY.createCustomerItemStcName(customer.getSurName()));
+            return item;
+        }).forEachOrdered((item) -> {
             customerList.add(item);
-        }
+        });
         customersStc.setCustomerList(customerListStc);
         customers.setCustomersStc(customersStc);
         WebServiceTemplate template = buildWebServiceTemplate();

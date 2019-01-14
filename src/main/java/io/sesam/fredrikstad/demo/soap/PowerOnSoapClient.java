@@ -24,6 +24,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
+import poweron.wsdl.AddressItemStc;
+import poweron.wsdl.AddressListStc;
+import poweron.wsdl.Addresses;
+import poweron.wsdl.AddressesResponse;
+import poweron.wsdl.AddressesResponseStc;
+import poweron.wsdl.AddressesStc;
 import poweron.wsdl.ConnectionAgreementItemStc;
 import poweron.wsdl.ConnectionAgreementListStc;
 import poweron.wsdl.ConnectionAgreements;
@@ -98,8 +104,41 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processAddresses(List<Address> input) {
-        for (Address address : input) {
-            //FIXME, fix json mapping in Address model before
+        Addresses addresses = FACTORY.createAddresses();
+        AddressesStc addressesStc = FACTORY.createAddressesStc();
+        addressesStc.setOperationType("I");
+        AddressListStc addressListStc = FACTORY.createAddressListStc();
+        List<AddressItemStc> addressStc = addressListStc.getAddressStc();
+        input.stream().map((address) -> {
+            AddressItemStc item = FACTORY.createAddressItemStc();
+            item.setAddressNumber(address.getAddressNumber());
+            item.setPostcode(FACTORY.createAddressItemStcPostcode(address.getPostcode()));
+            item.setAdministrativeAreaName(FACTORY.createAddressItemStcAdministrativeAreaName(address.getAdministrativeAreaName()));
+            item.setTownName(FACTORY.createAddressItemStcTownName(address.getTownName()));
+            item.setStreetName(FACTORY.createAddressItemStcStreetName(address.getStreetName()));
+            item.setSecondaryAddressableObject(FACTORY.createAddressItemStcSecondaryAddressableObject(address.getSecondaryAddressableObject()));
+            item.setPrimaryAddressableObject(FACTORY.createAddressItemStcPrimaryAddressableObject(address.getPrimaryAddressableObject()));
+            item.setQSTCode(FACTORY.createAddressItemStcQSTCode(address.getqSTCode()));
+            item.setAFTCode(FACTORY.createAddressItemStcAFTCode(address.getaFTCode()));
+            item.setGridReference(FACTORY.createAddressItemStcGridReference(address.getGridReference()));
+            item.setLocalityName(FACTORY.createAddressItemStcLocalityName(address.getLocalityName()));
+            item.setGeoPosition(FACTORY.createAddressItemStcGeoPosition(address.getGeoPosition()));
+            item.setLotNumber(FACTORY.createAddressItemStcLotNumber(address.getLotNumber()));
+            item.setPlanNumber(FACTORY.createAddressItemStcPlanNumber(address.getPlanNumber()));
+            return item;
+        }).forEachOrdered((item) -> {
+            addressStc.add(item);
+        });
+        addressesStc.setAddressList(addressListStc);
+        addresses.setAddressesStc(addressesStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        AddressesResponse res = (AddressesResponse) template.marshalSendAndReceive(config.getUrl(), addresses,
+                new SoapActionCallback("Customer/Addresses"));
+        AddressesResponseStc innerRes = res.getAddressesResponseStc();
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
         }
     }
 

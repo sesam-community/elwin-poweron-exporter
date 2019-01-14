@@ -154,7 +154,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         ConnectionAgreementListStc connectionAgreementListStc = FACTORY.createConnectionAgreementListStc();
         List<ConnectionAgreementItemStc> agreements = connectionAgreementListStc.getConnectionAgreementStc();
 
-        for (ConnectionAgreement conAgreement : input) {
+        input.stream().map((conAgreement) -> {
             ConnectionAgreementItemStc item = FACTORY.createConnectionAgreementItemStc();
             if (!conAgreement.getAgreementStartDate().isEmpty()) {
                 try {
@@ -171,8 +171,10 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     conAgreement.getNoticeToDeenergise()));
             item.setPropertyNumber(FACTORY.createConnectionAgreementItemStcPropertyNumber(
                     conAgreement.getPropertyNumber()));
+            return item;
+        }).forEachOrdered((item) -> {
             agreements.add(item);
-        }
+        });
         connectionAgreementsStc.setConnectionAgreementList(connectionAgreementListStc);
         connectionAgreements.setConnectionAgreementsStc(connectionAgreementsStc);
         WebServiceTemplate template = buildWebServiceTemplate();

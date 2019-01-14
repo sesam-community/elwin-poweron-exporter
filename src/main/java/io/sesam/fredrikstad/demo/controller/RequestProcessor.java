@@ -34,10 +34,12 @@ public class RequestProcessor {
 
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessor.class);
     private static final String CT = "application/json";
+
     /**
      * REST endpoint for elwin-to-power-on-addresses pipe
+     *
      * @param input list of Address objects each containg pipe output entity
-     * @return 
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_addresses", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<Address> cdAddresses(@RequestBody List<Address> input) {
@@ -49,10 +51,11 @@ public class RequestProcessor {
         this.wsClient.processAddresses(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-connection-agreements pipe
+     * @param input list of ConnectionAgreement objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_connection_agreement", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<ConnectionAgreement> cdConnectionAgreement(@RequestBody List<ConnectionAgreement> input) {
@@ -64,10 +67,11 @@ public class RequestProcessor {
         this.wsClient.processConnectionAgreements(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-customer-property-associations pipe
+     * @param input list of CustomerPropertyAssociation objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_cust_property_assoc", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<CustomerPropertyAssociation> cdCustPropertyAssoc(@RequestBody List<CustomerPropertyAssociation> input) {
@@ -79,10 +83,11 @@ public class RequestProcessor {
         this.wsClient.processCustomerPropertyAssociations(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-customer pipe
+     * @param input list of Customer objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_customer", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<Customer> cdCustomer(@RequestBody List<Customer> input) {
@@ -94,10 +99,11 @@ public class RequestProcessor {
         this.wsClient.processCustomers(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-customer-classifications pipe
+     * @param input list of CustomerClassification objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_customer_classifications", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<CustomerClassification> cdCustomerClassifications(@RequestBody List<CustomerClassification> input) {
@@ -109,10 +115,11 @@ public class RequestProcessor {
         this.wsClient.processCustomerClassifications(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-email-addresses pipe
+     * @param input list of EmailAddress objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_email_addr", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<EmailAddress> cdEmailAddr(@RequestBody List<EmailAddress> input) {
@@ -124,10 +131,11 @@ public class RequestProcessor {
         this.wsClient.processEmailAddressList(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-meter-no pipe
+     * @param input list of MeterNumber objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_meter_no", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<MeterNumber> cdMeterNo(@RequestBody List<MeterNumber> input) {
@@ -139,10 +147,11 @@ public class RequestProcessor {
         this.wsClient.processMeterNumbers(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-properties pipe
+     * @param input list of Property objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_properties", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<Property> cdProperties(@RequestBody List<Property> input) {
@@ -154,10 +163,11 @@ public class RequestProcessor {
         this.wsClient.processProperties(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-property-classifications pipe
+     * @param input list of PropertyClassification objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_property_classifications", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<PropertyClassification> cdPropertyClassifications(@RequestBody List<PropertyClassification> input) {
@@ -169,10 +179,11 @@ public class RequestProcessor {
         this.wsClient.processPropertyClassifications(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-telephone-numbers pipe
+     * @param input list of PhoneNumber objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
     @RequestMapping(value = "/cd_telephone_no", method = {RequestMethod.POST}, consumes = CT, produces = CT)
     public List<PhoneNumber> cdTelephoneNo(@RequestBody List<PhoneNumber> input) {
@@ -184,13 +195,14 @@ public class RequestProcessor {
         this.wsClient.processPhoneNumbers(input);
         return input;
     }
+
     /**
-     * 
-     * @param input
-     * @return 
+     * REST endpoint for elwin-to-power-on-network-property-lLinks pipe
+     * @param input list of NetworkPropertyLink objects each containg pipe output entity
+     * @return altered input list with status message for every entity
      */
-    @RequestMapping(value = "/network_property_link_new", method = {RequestMethod.POST}, consumes = CT, produces = CT)
-    public List<NetworkPropertyLink> networkPropertyLinkNew(@RequestBody List<NetworkPropertyLink> input) {
+    @RequestMapping(value = "/network_property_link", method = {RequestMethod.POST}, consumes = CT, produces = CT)
+    public List<NetworkPropertyLink> networkPropertyLink(@RequestBody List<NetworkPropertyLink> input) {
         LOG.info("request to network_property_link_new endpoint with batch size {}", input.size());
         if (0 == input.size()) {
             LOG.info("Empty set, no processing needed, return.");

@@ -45,6 +45,7 @@ import poweron.wsdl.EmailAddressesStc;
 import poweron.wsdl.ObjectFactory;
 
 /**
+ * Simple SoapService client for Power ON customer inbound messages service
  *
  * @author 100tsa
  */
@@ -58,8 +59,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
     private static final Logger LOG = LoggerFactory.getLogger(PowerOnSoapClient.class);
 
     /**
+     * Insert/update email addresses
      *
-     * @param input
+     * @param input list of email addresses
      */
     public void processEmailAddressList(List<EmailAddress> input) {
         EmailAddresses soapMessage = FACTORY.createEmailAddresses();
@@ -90,12 +92,22 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
 
     }
 
+    /**
+     * Insert/update addresses
+     *
+     * @param input
+     */
     public void processAddresses(List<Address> input) {
         for (Address address : input) {
             //FIXME, fix json mapping in Address model before
         }
     }
 
+    /**
+     * Insert/update connection agreements
+     *
+     * @param input
+     */
     public void processConnectionAgreements(List<ConnectionAgreement> input) {
         ConnectionAgreements connectionAgreements = FACTORY.createConnectionAgreements();
         ConnectionAgreementsStc connectionAgreementsStc = FACTORY.createConnectionAgreementsStc();
@@ -135,10 +147,20 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         }
     }
 
+    /**
+     * Insert/update customer property associations
+     *
+     * @param input
+     */
     public void processCustomerPropertyAssociations(List<CustomerPropertyAssociation> input) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Insert/update customers
+     *
+     * @param input
+     */
     public void processCustomers(List<Customer> input) {
         Customers customers = FACTORY.createCustomers();
         CustomersStc customersStc = FACTORY.createCustomersStc();
@@ -165,26 +187,55 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         }
     }
 
+    /**
+     * Insert/update customer classifications
+     *
+     * @param input
+     */
     public void processCustomerClassifications(List<CustomerClassification> input) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Insert/update meter point numbers
+     *
+     * @param input
+     */
     public void processMeterNumbers(List<MeterNumber> input) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Insert/update properties
+     *
+     * @param input
+     */
     public void processProperties(List<Property> input) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Insert/update property classifications
+     *
+     * @param input
+     */
     public void processPropertyClassifications(List<PropertyClassification> input) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Insert/update phone numbers
+     *
+     * @param input
+     */
     public void processPhoneNumbers(List<PhoneNumber> input) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param input
+     */
     public void processNetworkPropertyLinks(List<NetworkPropertyLink> input) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

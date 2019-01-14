@@ -9,46 +9,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Address extends SesamEntity {
 
-    @JsonProperty("")
+    @JsonProperty("AddressNumber")
     private String addressNumber;
 
-    @JsonProperty("")
+    @JsonProperty("Postcode")
     private String postcode;
 
-    @JsonProperty("")
+    @JsonProperty("AdministrativeAreaName")
     private String administrativeAreaName;
 
-    @JsonProperty("")
+    @JsonProperty("TownName")
     private String townName;
 
-    @JsonProperty("")
+    @JsonProperty("StreetName")
     private String streetName;
 
-    @JsonProperty("")
+    @JsonProperty("SecondaryAddressableObject")
     private String secondaryAddressableObject;
 
-    @JsonProperty("")
+    @JsonProperty("PrimaryAddressableObject")
     private String primaryAddressableObject;
 
-    @JsonProperty("")
+    @JsonProperty("QSTCode")
     private String qSTCode;
 
-    @JsonProperty("")
+    @JsonProperty("AFTCode")
     private String aFTCode;
 
-    @JsonProperty("")
+    @JsonProperty("GridReference")
     private String gridReference;
 
-    @JsonProperty("")
+    @JsonProperty("LocalityName")
     private String localityName;
 
-    @JsonProperty("")
+    @JsonProperty("GeoPosition")
     private String geoPosition;
 
-    @JsonProperty("")
+    @JsonProperty("LotNumber")
     private String lotNumber;
 
-    @JsonProperty("")
+    @JsonProperty("PlanNumber")
     private String planNumber;
 
     public String getAddressNumber() {

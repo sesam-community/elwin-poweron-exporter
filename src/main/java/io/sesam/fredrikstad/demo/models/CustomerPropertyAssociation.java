@@ -14,7 +14,7 @@ public class CustomerPropertyAssociation extends SesamEntity{
     private String propertyNumber;
     
     @JsonProperty("ATCode")
-    private int atCode;
+    private String atCode;
     
     @JsonProperty("UsageStartDate")
     private String usageStartDate;
@@ -54,11 +54,11 @@ public class CustomerPropertyAssociation extends SesamEntity{
         this.propertyNumber = propertyNumber;
     }
 
-    public int getAtCode() {
+    public String getAtCode() {
         return atCode;
     }
 
-    public void setAtCode(int atCode) {
+    public void setAtCode(String atCode) {
         this.atCode = atCode;
     }
 

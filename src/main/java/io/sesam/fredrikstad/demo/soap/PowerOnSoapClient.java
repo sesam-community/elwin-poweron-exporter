@@ -67,6 +67,12 @@ import poweron.wsdl.MeterNumbersResponse;
 import poweron.wsdl.MeterNumbersResponseStc;
 import poweron.wsdl.MeterNumbersStc;
 import poweron.wsdl.ObjectFactory;
+import poweron.wsdl.Properties;
+import poweron.wsdl.PropertiesResponse;
+import poweron.wsdl.PropertiesResponseStc;
+import poweron.wsdl.PropertiesStc;
+import poweron.wsdl.PropertyItemStc;
+import poweron.wsdl.PropertyListStc;
 
 /**
  * Simple SoapService client for Power ON customer inbound messages service
@@ -382,7 +388,33 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processProperties(List<Property> input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Properties properties = FACTORY.createProperties();
+        PropertiesStc propertiesStc = FACTORY.createPropertiesStc();
+
+        propertiesStc.setOperationType("I");
+
+        PropertyListStc propertyListStc = FACTORY.createPropertyListStc();
+        List<PropertyItemStc> propertyStcList = propertyListStc.getPropertyStc();
+
+        input.forEach((property) -> {
+            PropertyItemStc item = FACTORY.createPropertyItemStc();
+            item.setAddressNumber(property.getAddressNumber());
+            item.setPropertyNumber(property.getPropertyNumber());
+            propertyStcList.add(item);
+        });
+
+        propertiesStc.setPropertyList(propertyListStc);
+        properties.setPropertiesStc(propertiesStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        PropertiesResponse res = (PropertiesResponse) template.marshalSendAndReceive(config.getUrl(), properties,
+                new SoapActionCallback("Customer/Properties"));
+
+        PropertiesResponseStc innerRes = res.getPropertiesResponseStc();
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     /**

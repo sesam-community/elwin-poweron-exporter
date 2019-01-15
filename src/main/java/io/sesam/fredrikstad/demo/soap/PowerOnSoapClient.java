@@ -36,6 +36,12 @@ import poweron.wsdl.ConnectionAgreements;
 import poweron.wsdl.ConnectionAgreementsResponse;
 import poweron.wsdl.ConnectionAgreementsResponseStc;
 import poweron.wsdl.ConnectionAgreementsStc;
+import poweron.wsdl.CustomerClassificationItemStc;
+import poweron.wsdl.CustomerClassificationListStc;
+import poweron.wsdl.CustomerClassifications;
+import poweron.wsdl.CustomerClassificationsResponse;
+import poweron.wsdl.CustomerClassificationsResponseStc;
+import poweron.wsdl.CustomerClassificationsStc;
 import poweron.wsdl.CustomerItemStc;
 import poweron.wsdl.CustomerListStc;
 import poweron.wsdl.CustomerPropertyAssociationItemStc;
@@ -295,7 +301,35 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processCustomerClassifications(List<CustomerClassification> input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CustomerClassifications customerClassifications = FACTORY.createCustomerClassifications();
+        CustomerClassificationsStc customerClassificationsStc = FACTORY.createCustomerClassificationsStc();
+
+        customerClassificationsStc.setOperationType("I");
+
+        CustomerClassificationListStc customerClassificationListStc = FACTORY.createCustomerClassificationListStc();
+        List<CustomerClassificationItemStc> customerClassificationList = customerClassificationListStc.getCustomerClassificationStc();
+
+        input.stream().map((cusClassifications) -> {
+            CustomerClassificationItemStc item = FACTORY.createCustomerClassificationItemStc();
+            item.setCustomerNumber(cusClassifications.getCustomerNumber());
+            item.setCTCode(FACTORY.createCustomerClassificationItemStcCTCode(String.valueOf(cusClassifications.getCtCode())));
+            return item;
+        }).forEachOrdered((item) -> {
+            customerClassificationList.add(item);
+        });
+        customerClassificationsStc.setCustomerClassificationList(customerClassificationListStc);
+        customerClassifications.setCustomerClassificationsStc(customerClassificationsStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        CustomerClassificationsResponse res = (CustomerClassificationsResponse) template.marshalSendAndReceive(
+                config.getUrl(), customerClassifications,
+                new SoapActionCallback("Customer/CustomerClassifications"));
+        CustomerClassificationsResponseStc innerRes = res.getCustomerClassificationsResponseStc();
+
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     /**

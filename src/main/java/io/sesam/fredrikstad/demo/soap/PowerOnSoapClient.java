@@ -71,6 +71,12 @@ import poweron.wsdl.Properties;
 import poweron.wsdl.PropertiesResponse;
 import poweron.wsdl.PropertiesResponseStc;
 import poweron.wsdl.PropertiesStc;
+import poweron.wsdl.PropertyClassificationItemStc;
+import poweron.wsdl.PropertyClassificationListStc;
+import poweron.wsdl.PropertyClassifications;
+import poweron.wsdl.PropertyClassificationsResponse;
+import poweron.wsdl.PropertyClassificationsResponseStc;
+import poweron.wsdl.PropertyClassificationsStc;
 import poweron.wsdl.PropertyItemStc;
 import poweron.wsdl.PropertyListStc;
 
@@ -423,7 +429,33 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processPropertyClassifications(List<PropertyClassification> input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PropertyClassifications propertyClassifications = FACTORY.createPropertyClassifications();
+        PropertyClassificationsStc propertyClassificationsStc = FACTORY.createPropertyClassificationsStc();
+
+        propertyClassificationsStc.setOperationType("I");
+
+        PropertyClassificationListStc propertyClassificationListStc = FACTORY.createPropertyClassificationListStc();
+        List<PropertyClassificationItemStc> propertyClassificationStcList = propertyClassificationListStc.getPropertyClassificationStc();
+
+        for (PropertyClassification propertyClassification : input) {
+            PropertyClassificationItemStc item = FACTORY.createPropertyClassificationItemStc();
+            item.setPropertyNumber(propertyClassification.getPropertyNumber());
+            item.setPTCode(FACTORY.createPropertyClassificationItemStcPTCode(String.valueOf(propertyClassification.getPtCode())));
+            propertyClassificationStcList.add(item);
+        }
+
+        propertyClassificationsStc.setPropertyClassificationList(propertyClassificationListStc);
+        propertyClassifications.setPropertyClassificationsStc(propertyClassificationsStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        PropertyClassificationsResponse res = (PropertyClassificationsResponse) template.marshalSendAndReceive(config.getUrl(), propertyClassifications,
+                new SoapActionCallback("Customer/PropertyClassifications"));
+        PropertyClassificationsResponseStc innerRes = res.getPropertyClassificationsResponseStc();
+
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     /**

@@ -437,12 +437,14 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         PropertyClassificationListStc propertyClassificationListStc = FACTORY.createPropertyClassificationListStc();
         List<PropertyClassificationItemStc> propertyClassificationStcList = propertyClassificationListStc.getPropertyClassificationStc();
 
-        for (PropertyClassification propertyClassification : input) {
+        input.stream().map((propertyClassification) -> {
             PropertyClassificationItemStc item = FACTORY.createPropertyClassificationItemStc();
             item.setPropertyNumber(propertyClassification.getPropertyNumber());
             item.setPTCode(FACTORY.createPropertyClassificationItemStcPTCode(String.valueOf(propertyClassification.getPtCode())));
+            return item;
+        }).forEachOrdered((item) -> {
             propertyClassificationStcList.add(item);
-        }
+        });
 
         propertyClassificationsStc.setPropertyClassificationList(propertyClassificationListStc);
         propertyClassifications.setPropertyClassificationsStc(propertyClassificationsStc);

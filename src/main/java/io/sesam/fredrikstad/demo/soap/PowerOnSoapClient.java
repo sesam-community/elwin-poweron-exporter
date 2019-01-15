@@ -15,6 +15,7 @@ import io.sesam.fredrikstad.demo.models.PhoneNumber;
 import io.sesam.fredrikstad.demo.models.Property;
 import io.sesam.fredrikstad.demo.models.PropertyClassification;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -79,6 +80,12 @@ import poweron.wsdl.PropertyClassificationsResponseStc;
 import poweron.wsdl.PropertyClassificationsStc;
 import poweron.wsdl.PropertyItemStc;
 import poweron.wsdl.PropertyListStc;
+import poweron.wsdl.TelephoneNumberItemStc;
+import poweron.wsdl.TelephoneNumberListStc;
+import poweron.wsdl.TelephoneNumbers;
+import poweron.wsdl.TelephoneNumbersResponse;
+import poweron.wsdl.TelephoneNumbersResponseStc;
+import poweron.wsdl.TelephoneNumbersStc;
 
 /**
  * Simple SoapService client for Power ON customer inbound messages service
@@ -466,7 +473,53 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processPhoneNumbers(List<PhoneNumber> input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TelephoneNumbers telephoneNumbers = FACTORY.createTelephoneNumbers();
+        TelephoneNumbersStc telephoneNumbersStc = FACTORY.createTelephoneNumbersStc();
+
+        telephoneNumbersStc.setOperationType("I");
+
+        TelephoneNumberListStc telephoneNumberListStc = FACTORY.createTelephoneNumberListStc();
+        List<TelephoneNumberItemStc> telephoneNumberStcList = telephoneNumberListStc.getTelephoneNumberStc();
+
+        input.stream().map((phoneNumber) -> {
+            TelephoneNumberItemStc item = FACTORY.createTelephoneNumberItemStc();
+            item.setPropertyNumber(phoneNumber.getPropertyNumber());
+            item.setTelephoneNumber(phoneNumber.getPhoneNumber());
+            if (!phoneNumber.getUsageStartDate().isEmpty()) {
+                try {
+                    item.setUsageStartDate(FACTORY.createTelephoneNumberItemStcUsageStartDate(parseDateStringToXmlGregorianCalendar(phoneNumber.getUsageStartDate(), null)));
+                } catch (DatatypeConfigurationException ex) {
+                    LOG.warn("Couldn't parse date {} to XMLGregorianCalendar", phoneNumber.getUsageStartDate());
+                    LOG.warn(ex.getMessage());
+                }
+            }
+            if (!phoneNumber.getUsageEndDate().isEmpty()) {
+                try {
+                    item.setUsageEndDate(FACTORY.createTelephoneNumberItemStcUsageEndDate(parseDateStringToXmlGregorianCalendar(phoneNumber.getUsageEndDate(), null)));
+                } catch (DatatypeConfigurationException ex) {
+                    LOG.warn("Couldn't parse date {} to XMLGregorianCalendar", phoneNumber.getUsageEndDate());
+                    LOG.warn(ex.getMessage());
+                }
+            }
+            item.setType(FACTORY.createTelephoneNumberItemStcType(String.valueOf(phoneNumber.getType())));
+            return item;
+        }).forEachOrdered((item) -> {
+            telephoneNumberStcList.add(item);
+        });
+
+        telephoneNumbersStc.setTelephoneNumberList(telephoneNumberListStc);
+        telephoneNumbers.setTelephoneNumbersStc(telephoneNumbersStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        TelephoneNumbersResponse res = (TelephoneNumbersResponse) template.marshalSendAndReceive(config.getUrl(), telephoneNumbers,
+                new SoapActionCallback("Customer/TelephoneNumbers"));
+
+        TelephoneNumbersResponseStc innerRes = res.getTelephoneNumbersResponseStc();
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
+
     }
 
     /**

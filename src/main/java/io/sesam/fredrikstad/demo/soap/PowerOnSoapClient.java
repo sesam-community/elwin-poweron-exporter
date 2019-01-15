@@ -248,7 +248,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
             item.setCustomerNumber(inCustPropAssoc.getCustomerNumber());
             item.setPropertyNumber(inCustPropAssoc.getPropertyNumber());
             item.setATCode(FACTORY.createCustomerPropertyAssociationItemStcATCode(inCustPropAssoc.getAtCode()));
-            if (!inCustPropAssoc.getUsageStartDate().isEmpty()) {
+            if (null != inCustPropAssoc.getUsageStartDate() && !inCustPropAssoc.getUsageStartDate().isEmpty()) {
                 try {
                     item.setUsageStartDate(FACTORY.createCustomerPropertyAssociationItemStcUsageStartDate(
                             this.parseDateStringToXmlGregorianCalendar(inCustPropAssoc.getUsageStartDate(), null)));
@@ -257,7 +257,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
-            if (!inCustPropAssoc.getUsageEndDate().isEmpty()) {
+            if (null != inCustPropAssoc.getUsageEndDate() && !inCustPropAssoc.getUsageEndDate().isEmpty()) {
                 try {
                     item.setUsageEndDate(FACTORY.createCustomerPropertyAssociationItemStcUsageEndDate(
                             this.parseDateStringToXmlGregorianCalendar(inCustPropAssoc.getUsageEndDate(), null)));
@@ -491,7 +491,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
             TelephoneNumberItemStc item = FACTORY.createTelephoneNumberItemStc();
             item.setPropertyNumber(phoneNumber.getPropertyNumber());
             item.setTelephoneNumber(phoneNumber.getPhoneNumber());
-            if (!phoneNumber.getUsageStartDate().isEmpty()) {
+            if (null != phoneNumber.getUsageStartDate() && !phoneNumber.getUsageStartDate().isEmpty()) {
                 try {
                     item.setUsageStartDate(FACTORY.createTelephoneNumberItemStcUsageStartDate(parseDateStringToXmlGregorianCalendar(phoneNumber.getUsageStartDate(), null)));
                 } catch (DatatypeConfigurationException ex) {
@@ -499,7 +499,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
-            if (!phoneNumber.getUsageEndDate().isEmpty()) {
+            if (null!= phoneNumber.getUsageEndDate() && !phoneNumber.getUsageEndDate().isEmpty()) {
                 try {
                     item.setUsageEndDate(FACTORY.createTelephoneNumberItemStcUsageEndDate(parseDateStringToXmlGregorianCalendar(phoneNumber.getUsageEndDate(), null)));
                 } catch (DatatypeConfigurationException ex) {
@@ -521,9 +521,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                 new SoapActionCallback("Customer/TelephoneNumbers"));
 
         TelephoneNumbersResponseStc innerRes = res.getTelephoneNumbersResponseStc();
-        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        LOG.info("status: {}, message: {} - {}", innerRes.getStatus(), innerRes.getTransactionErrors(), innerRes.getErrorMsg());
         if (isNotOk(innerRes.getStatus())) {
-            throw new OperationException(innerRes.getTransactionErrors());
+            throw new OperationException(innerRes.getTransactionErrors() + " " + innerRes.getErrorMsg());
         }
 
     }

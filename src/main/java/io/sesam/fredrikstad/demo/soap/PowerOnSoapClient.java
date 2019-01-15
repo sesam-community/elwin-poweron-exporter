@@ -499,7 +499,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
-            if (null!= phoneNumber.getUsageEndDate() && !phoneNumber.getUsageEndDate().isEmpty()) {
+            if (null != phoneNumber.getUsageEndDate() && !phoneNumber.getUsageEndDate().isEmpty()) {
                 try {
                     item.setUsageEndDate(FACTORY.createTelephoneNumberItemStcUsageEndDate(parseDateStringToXmlGregorianCalendar(phoneNumber.getUsageEndDate(), null)));
                 } catch (DatatypeConfigurationException ex) {
@@ -507,7 +507,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
-            item.setType(FACTORY.createTelephoneNumberItemStcType(String.valueOf(phoneNumber.getType())));
+            item.setType(FACTORY.createTelephoneNumberItemStcType(phoneNumber.getType()));
             return item;
         }).forEachOrdered((item) -> {
             telephoneNumberStcList.add(item);

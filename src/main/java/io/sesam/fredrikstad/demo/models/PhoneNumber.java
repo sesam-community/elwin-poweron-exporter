@@ -20,7 +20,7 @@ public class PhoneNumber extends SesamEntity{
     private String usageEndDate;
     
     @JsonProperty("Type")
-    private int type;
+    private String type;
 
     public PhoneNumber() {
         super();
@@ -58,11 +58,11 @@ public class PhoneNumber extends SesamEntity{
         this.usageEndDate = usageEndDate;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
     

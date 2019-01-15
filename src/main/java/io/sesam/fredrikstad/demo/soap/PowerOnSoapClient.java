@@ -67,6 +67,12 @@ import poweron.wsdl.MeterNumbers;
 import poweron.wsdl.MeterNumbersResponse;
 import poweron.wsdl.MeterNumbersResponseStc;
 import poweron.wsdl.MeterNumbersStc;
+import poweron.wsdl.NetworkPropertyLinkItemStc;
+import poweron.wsdl.NetworkPropertyLinkListStc;
+import poweron.wsdl.NetworkPropertyLinks;
+import poweron.wsdl.NetworkPropertyLinksResponse;
+import poweron.wsdl.NetworkPropertyLinksResponseStc;
+import poweron.wsdl.NetworkPropertyLinksStc;
 import poweron.wsdl.ObjectFactory;
 import poweron.wsdl.Properties;
 import poweron.wsdl.PropertiesResponse;
@@ -527,7 +533,38 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processNetworkPropertyLinks(List<NetworkPropertyLink> input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        NetworkPropertyLinks networkPropertyLinks = FACTORY.createNetworkPropertyLinks();
+        NetworkPropertyLinksStc networkPropertyLinksStc = FACTORY.createNetworkPropertyLinksStc();
+
+        networkPropertyLinksStc.setOperationType("I");
+
+        NetworkPropertyLinkListStc networkPropertyLinkListStc = FACTORY.createNetworkPropertyLinkListStc();
+        List<NetworkPropertyLinkItemStc> networkPropertyLinkStcList = networkPropertyLinkListStc.getNetworkPropertyLinkStc();
+
+        input.stream().map((networkPropertyLink) -> {
+            NetworkPropertyLinkItemStc item = FACTORY.createNetworkPropertyLinkItemStc();
+            item.setPropertyNumber(networkPropertyLink.getPropertyNumber());
+            item.setFeederNumber(FACTORY.createNetworkPropertyLinkItemStcFeederNumber(String.valueOf(networkPropertyLink.getFeederNumber())));
+            item.setFeedQualityID(FACTORY.createNetworkPropertyLinkItemStcFeedQualityID(networkPropertyLink.getFeederQualityID()));
+            item.setPhase(FACTORY.createNetworkPropertyLinkItemStcPhase(String.valueOf(networkPropertyLink.getPhase())));
+            item.setNetworkStatus(FACTORY.createNetworkPropertyLinkItemStcNetworkStatus(networkPropertyLink.getNetworkStatus()));
+            return item;
+        }).forEachOrdered((item) -> {
+            networkPropertyLinkStcList.add(item);
+        });
+
+        networkPropertyLinksStc.setNetworkPropertyLinkList(networkPropertyLinkListStc);
+        networkPropertyLinks.setNetworkPropertyLinksStc(networkPropertyLinksStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        NetworkPropertyLinksResponse res = (NetworkPropertyLinksResponse) template.marshalSendAndReceive(config.getUrl(), networkPropertyLinks,
+                new SoapActionCallback("Customer/NetworkPropertyLinks"));
+        NetworkPropertyLinksResponseStc innerRes = res.getNetworkPropertyLinksResponseStc();
+
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     /**

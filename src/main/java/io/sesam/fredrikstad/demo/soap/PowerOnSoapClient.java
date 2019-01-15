@@ -60,6 +60,12 @@ import poweron.wsdl.EmailAddresses;
 import poweron.wsdl.EmailAddressesResponse;
 import poweron.wsdl.EmailAddressesResponseStc;
 import poweron.wsdl.EmailAddressesStc;
+import poweron.wsdl.MeterNumberItemStc;
+import poweron.wsdl.MeterNumberListStc;
+import poweron.wsdl.MeterNumbers;
+import poweron.wsdl.MeterNumbersResponse;
+import poweron.wsdl.MeterNumbersResponseStc;
+import poweron.wsdl.MeterNumbersStc;
 import poweron.wsdl.ObjectFactory;
 
 /**
@@ -338,7 +344,36 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @param input
      */
     public void processMeterNumbers(List<MeterNumber> input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MeterNumbers meterNumbers = FACTORY.createMeterNumbers();
+        MeterNumbersStc meterNumbersStc = FACTORY.createMeterNumbersStc();
+
+        meterNumbersStc.setOperationType("I");
+
+        MeterNumberListStc meterNumberListStc = FACTORY.createMeterNumberListStc();
+        List<MeterNumberItemStc> meterNumberStcList = meterNumberListStc.getMeterNumberStc();
+
+        input.stream().map((meterNumber) -> {
+            MeterNumberItemStc item = FACTORY.createMeterNumberItemStc();
+            item.setPropertyNumber(meterNumber.getPropertyNumber());
+            item.setMeterNumber(FACTORY.createMeterNumberItemStcMeterNumber(meterNumber.getMeterNumber()));
+            item.setIsSmartMeter(FACTORY.createMeterNumberItemStcIsSmartMeter(meterNumber.getIsSmartMeter()));
+            return item;
+        }).forEachOrdered((item) -> {
+            meterNumberStcList.add(item);
+        });
+
+        meterNumbersStc.setMeterNumberList(meterNumberListStc);
+        meterNumbers.setMeterNumbersStc(meterNumbersStc);
+
+        WebServiceTemplate template = buildWebServiceTemplate();
+        MeterNumbersResponse res = (MeterNumbersResponse) template.marshalSendAndReceive(
+                config.getUrl(), meterNumbers,
+                new SoapActionCallback("Customer/MeterNumbers"));
+        MeterNumbersResponseStc innerRes = res.getMeterNumbersResponseStc();
+        LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+        if (isNotOk(innerRes.getStatus())) {
+            throw new OperationException(innerRes.getTransactionErrors());
+        }
     }
 
     /**

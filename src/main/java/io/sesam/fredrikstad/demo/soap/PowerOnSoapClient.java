@@ -1,5 +1,6 @@
 package io.sesam.fredrikstad.demo.soap;
 
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import io.sesam.fredrikstad.demo.AppConfig;
 import io.sesam.fredrikstad.demo.models.Address;
 import io.sesam.fredrikstad.demo.models.ConnectionAgreement;
@@ -14,8 +15,9 @@ import io.sesam.fredrikstad.demo.models.NetworkPropertyLink;
 import io.sesam.fredrikstad.demo.models.PhoneNumber;
 import io.sesam.fredrikstad.demo.models.Property;
 import io.sesam.fredrikstad.demo.models.PropertyClassification;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Map;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -245,9 +247,11 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
 
         input.stream().map((inCustPropAssoc) -> {
             CustomerPropertyAssociationItemStc item = FACTORY.createCustomerPropertyAssociationItemStc();
+            
             item.setCustomerNumber(inCustPropAssoc.getCustomerNumber());
             item.setPropertyNumber(inCustPropAssoc.getPropertyNumber());
             item.setATCode(FACTORY.createCustomerPropertyAssociationItemStcATCode(inCustPropAssoc.getAtCode()));
+            
             if (null != inCustPropAssoc.getUsageStartDate() && !inCustPropAssoc.getUsageStartDate().isEmpty()) {
                 try {
                     item.setUsageStartDate(FACTORY.createCustomerPropertyAssociationItemStcUsageStartDate(
@@ -257,6 +261,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
+            
             if (null != inCustPropAssoc.getUsageEndDate() && !inCustPropAssoc.getUsageEndDate().isEmpty()) {
                 try {
                     item.setUsageEndDate(FACTORY.createCustomerPropertyAssociationItemStcUsageEndDate(
@@ -266,7 +271,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
-            item.setLinkReference(FACTORY.createCustomerPropertyAssociationItemStcLinkAddressReference(
+            item.setLinkReference(FACTORY.createCustomerPropertyAssociationItemStcLinkReference(
                     inCustPropAssoc.getLinkReference()));
             item.setLinkSystem(FACTORY.createCustomerPropertyAssociationItemStcLinkSystem(
                     inCustPropAssoc.getLinkSystem()));
@@ -573,7 +578,18 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      * @return
      */
     private WebServiceTemplate buildWebServiceTemplate() {
+        NamespacePrefixMapper mapper = new NamespacePrefixMapper() {
+            @Override
+            public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
+                return "cus";
+            }
+        };
+        Map<String, Object> props = new HashMap();
+        props.put("jaxb.formatted.output", Boolean.TRUE);
+        props.put("com.sun.xml.bind.namespacePrefixMapper", mapper);
+
         Jaxb2Marshaller m = new Jaxb2Marshaller();
+        m.setMarshallerProperties(props);
         m.setContextPath("poweron.wsdl");
         WebServiceTemplate template = getWebServiceTemplate();
         template.setMarshaller(m);

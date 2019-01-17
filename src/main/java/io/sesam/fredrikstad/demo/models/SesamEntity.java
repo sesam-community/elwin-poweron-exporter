@@ -13,6 +13,9 @@ public class SesamEntity {
 
     @JsonProperty("_deleted")
     private boolean deleted;
+    
+    @JsonProperty("operation")
+    private String operation;
 
     private String status;
 
@@ -43,6 +46,15 @@ public class SesamEntity {
         this.status = status;
     }
 
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+    
+    
     @Override
     public String toString() {
         return "SesamEntity{" + "id=" + id + ", deleted=" + deleted + ", status=" + status + '}';

@@ -589,6 +589,8 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
             item.setFeedQualityID(FACTORY.createNetworkPropertyLinkItemStcFeedQualityID(networkPropertyLink.getFeederQualityID()));
             item.setPhase(FACTORY.createNetworkPropertyLinkItemStcPhase(String.valueOf(networkPropertyLink.getPhase())));
             item.setNetworkStatus(FACTORY.createNetworkPropertyLinkItemStcNetworkStatus(networkPropertyLink.getNetworkStatus()));
+            item.setComponentAlias(FACTORY.createNetworkPropertyLinkItemStcComponentAlias(networkPropertyLink.getComponentAlias()));
+            item.setSubQualityID(FACTORY.createNetworkPropertyLinkItemStcSubQualityID(String.valueOf(networkPropertyLink.getSubQualityID())));
             return item;
         }).forEachOrdered((item) -> {
             networkPropertyLinkStcList.add(item);

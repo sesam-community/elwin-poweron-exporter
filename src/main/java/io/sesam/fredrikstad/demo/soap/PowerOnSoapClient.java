@@ -118,6 +118,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         EmailAddresses soapMessage = FACTORY.createEmailAddresses();
         EmailAddressesStc emailAddressesPlaceholder = FACTORY.createEmailAddressesStc();
         emailAddressesPlaceholder.setOperationType("I");
+        if (1 == input.size()) {
+            emailAddressesPlaceholder.setRealTime(FACTORY.createEmailAddressesStcRealTime(1));
+        }
         EmailAddressListStc emailList = FACTORY.createEmailAddressListStc();
         List<EmailAddressItemStc> emailAddressStc = emailList.getEmailAddressStc();
 
@@ -152,6 +155,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         Addresses addresses = FACTORY.createAddresses();
         AddressesStc addressesStc = FACTORY.createAddressesStc();
         addressesStc.setOperationType("I");
+        if (1 == input.size()) {
+            addressesStc.setRealTime(FACTORY.createAddressesStcRealTime(1));
+        }
         AddressListStc addressListStc = FACTORY.createAddressListStc();
         List<AddressItemStc> addressStc = addressListStc.getAddressStc();
         input.stream().map((address) -> {
@@ -195,7 +201,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
     public void processConnectionAgreements(List<ConnectionAgreement> input) {
         ConnectionAgreements connectionAgreements = FACTORY.createConnectionAgreements();
         ConnectionAgreementsStc connectionAgreementsStc = FACTORY.createConnectionAgreementsStc();
+
         connectionAgreementsStc.setOperationType("I");
+
         ConnectionAgreementListStc connectionAgreementListStc = FACTORY.createConnectionAgreementListStc();
         List<ConnectionAgreementItemStc> agreements = connectionAgreementListStc.getConnectionAgreementStc();
 
@@ -241,17 +249,22 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
     public void processCustomerPropertyAssociations(List<CustomerPropertyAssociation> input) {
         CustomerPropertyAssociations customerPropertyAssociations = FACTORY.createCustomerPropertyAssociations();
         CustomerPropertyAssociationsStc customerPropertyAssociationsStc = FACTORY.createCustomerPropertyAssociationsStc();
+
         customerPropertyAssociationsStc.setOperationType("I");
+        if (1 == input.size()) {
+            customerPropertyAssociationsStc.setRealTime(FACTORY.createCustomerPropertyAssociationsStcRealTime(1));
+        }
+
         CustomerPropertyAssociationListStc customerPropertyAssociationListStc = FACTORY.createCustomerPropertyAssociationListStc();
         List<CustomerPropertyAssociationItemStc> customerPropertyAssociationStc = customerPropertyAssociationListStc.getCustomerPropertyAssociationStc();
 
         input.stream().map((inCustPropAssoc) -> {
             CustomerPropertyAssociationItemStc item = FACTORY.createCustomerPropertyAssociationItemStc();
-            
+
             item.setCustomerNumber(inCustPropAssoc.getCustomerNumber());
             item.setPropertyNumber(inCustPropAssoc.getPropertyNumber());
             item.setATCode(FACTORY.createCustomerPropertyAssociationItemStcATCode(inCustPropAssoc.getAtCode()));
-            
+
             if (null != inCustPropAssoc.getUsageStartDate() && !inCustPropAssoc.getUsageStartDate().isEmpty()) {
                 try {
                     item.setUsageStartDate(FACTORY.createCustomerPropertyAssociationItemStcUsageStartDate(
@@ -261,7 +274,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
                     LOG.warn(ex.getMessage());
                 }
             }
-            
+
             if (null != inCustPropAssoc.getUsageEndDate() && !inCustPropAssoc.getUsageEndDate().isEmpty()) {
                 try {
                     item.setUsageEndDate(FACTORY.createCustomerPropertyAssociationItemStcUsageEndDate(
@@ -306,7 +319,12 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
     public void processCustomers(List<Customer> input) {
         Customers customers = FACTORY.createCustomers();
         CustomersStc customersStc = FACTORY.createCustomersStc();
+
         customersStc.setOperationType("I");
+        if (1 == input.size()) {
+            customersStc.setRealTime(FACTORY.createCustomersStcRealTime(1));
+        }
+
         CustomerListStc customerListStc = FACTORY.createCustomerListStc();
         List<CustomerItemStc> customerList = customerListStc.getCustomerStc();
 
@@ -341,6 +359,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         CustomerClassificationsStc customerClassificationsStc = FACTORY.createCustomerClassificationsStc();
 
         customerClassificationsStc.setOperationType("I");
+        if (1 == input.size()) {
+            customerClassificationsStc.setRealTime(FACTORY.createCustomerClassificationsStcRealTime(1));
+        }
 
         CustomerClassificationListStc customerClassificationListStc = FACTORY.createCustomerClassificationListStc();
         List<CustomerClassificationItemStc> customerClassificationList = customerClassificationListStc.getCustomerClassificationStc();
@@ -378,6 +399,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         MeterNumbersStc meterNumbersStc = FACTORY.createMeterNumbersStc();
 
         meterNumbersStc.setOperationType("I");
+        if (1 == input.size()) {
+            meterNumbersStc.setRealTime(FACTORY.createMeterNumbersStcRealTime(1));
+        }
 
         MeterNumberListStc meterNumberListStc = FACTORY.createMeterNumberListStc();
         List<MeterNumberItemStc> meterNumberStcList = meterNumberListStc.getMeterNumberStc();
@@ -416,6 +440,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         PropertiesStc propertiesStc = FACTORY.createPropertiesStc();
 
         propertiesStc.setOperationType("I");
+        if (1 == input.size()) {
+            propertiesStc.setRealTime(FACTORY.createPropertiesStcRealTime(1));
+        }
 
         PropertyListStc propertyListStc = FACTORY.createPropertyListStc();
         List<PropertyItemStc> propertyStcList = propertyListStc.getPropertyStc();
@@ -451,6 +478,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         PropertyClassificationsStc propertyClassificationsStc = FACTORY.createPropertyClassificationsStc();
 
         propertyClassificationsStc.setOperationType("I");
+        if (1 == input.size()) {
+            propertyClassificationsStc.setRealTime(FACTORY.createPropertyClassificationsStcRealTime(1));
+        }
 
         PropertyClassificationListStc propertyClassificationListStc = FACTORY.createPropertyClassificationListStc();
         List<PropertyClassificationItemStc> propertyClassificationStcList = propertyClassificationListStc.getPropertyClassificationStc();
@@ -488,6 +518,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         TelephoneNumbersStc telephoneNumbersStc = FACTORY.createTelephoneNumbersStc();
 
         telephoneNumbersStc.setOperationType("I");
+        if (1 == input.size()) {
+            telephoneNumbersStc.setRealTime(FACTORY.createTelephoneNumbersStcRealTime(1));
+        }
 
         TelephoneNumberListStc telephoneNumberListStc = FACTORY.createTelephoneNumberListStc();
         List<TelephoneNumberItemStc> telephoneNumberStcList = telephoneNumberListStc.getTelephoneNumberStc();
@@ -542,6 +575,9 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         NetworkPropertyLinksStc networkPropertyLinksStc = FACTORY.createNetworkPropertyLinksStc();
 
         networkPropertyLinksStc.setOperationType("I");
+        if (1 == input.size()) {
+            networkPropertyLinksStc.setRealTime(FACTORY.createNetworkPropertyLinksStcRealTime(1));
+        }
 
         NetworkPropertyLinkListStc networkPropertyLinkListStc = FACTORY.createNetworkPropertyLinkListStc();
         List<NetworkPropertyLinkItemStc> networkPropertyLinkStcList = networkPropertyLinkListStc.getNetworkPropertyLinkStc();

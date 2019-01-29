@@ -17,6 +17,9 @@ public class Customer extends SesamEntity {
     @JsonProperty("Name")
     private String surName;
 
+    @JsonProperty("CustomerId")
+    private String customerId;
+
     public Customer() {
         super();
     }
@@ -43,6 +46,14 @@ public class Customer extends SesamEntity {
 
     public void setSurName(String surName) {
         this.surName = surName;
+    }
+
+    public String getCustomerId() {
+        return this.customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
 }

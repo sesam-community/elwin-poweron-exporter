@@ -15,18 +15,30 @@ import io.sesam.fredrikstad.demo.models.NetworkPropertyLink;
 import io.sesam.fredrikstad.demo.models.PhoneNumber;
 import io.sesam.fredrikstad.demo.models.Property;
 import io.sesam.fredrikstad.demo.models.PropertyClassification;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
+import org.springframework.ws.transport.http.HttpComponentsMessageSender;
+import org.springframework.ws.transport.http.HttpComponentsMessageSender.RemoveSoapHeadersInterceptor;
 import poweron.wsdl.AddressItemStc;
 import poweron.wsdl.AddressListStc;
 import poweron.wsdl.Addresses;
@@ -106,8 +118,15 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
     private static final ObjectFactory FACTORY = new ObjectFactory();
     private static final Logger LOG = LoggerFactory.getLogger(PowerOnSoapClient.class);
 
+    private WebServiceTemplate template;
+
     @Autowired
     AppConfig config;
+
+    @PostConstruct
+    public void init() throws Exception {
+        this.template = this.buildWebServiceTemplate();
+    }
 
     /**
      * Insert/update email addresses
@@ -133,8 +152,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         }).forEachOrdered(emailAddressStc::add);
         emailAddressesPlaceholder.setEmailAddressList(emailList);
         soapMessage.setEmailAddressesStc(emailAddressesPlaceholder);
-
-        WebServiceTemplate template = buildWebServiceTemplate();
 
         EmailAddressesResponse res = (EmailAddressesResponse) template.marshalSendAndReceive(config.getUrl(), soapMessage,
                 new SoapActionCallback("Customer/EmailAddresses"));
@@ -183,7 +200,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         addressesStc.setAddressList(addressListStc);
         addresses.setAddressesStc(addressesStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         AddressesResponse res = (AddressesResponse) template.marshalSendAndReceive(config.getUrl(), addresses,
                 new SoapActionCallback("Customer/Addresses"));
         AddressesResponseStc innerRes = res.getAddressesResponseStc();
@@ -230,7 +246,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         });
         connectionAgreementsStc.setConnectionAgreementList(connectionAgreementListStc);
         connectionAgreements.setConnectionAgreementsStc(connectionAgreementsStc);
-        WebServiceTemplate template = buildWebServiceTemplate();
+
         ConnectionAgreementsResponse res
                 = (ConnectionAgreementsResponse) template.marshalSendAndReceive(config.getUrl(), connectionAgreements,
                         new SoapActionCallback("Customer/ConnectionAgreements"));
@@ -299,7 +315,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         customerPropertyAssociationsStc.setCustomerPropertyAssociationList(customerPropertyAssociationListStc);
         customerPropertyAssociations.setCustomerPropertyAssociationsStc(customerPropertyAssociationsStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         CustomerPropertyAssociationsResponse res
                 = (CustomerPropertyAssociationsResponse) template.marshalSendAndReceive(
                         config.getUrl(), customerPropertyAssociations,
@@ -331,6 +346,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         input.stream().map((customer) -> {
             CustomerItemStc item = FACTORY.createCustomerItemStc();
             item.setCustomerNumber(customer.getCustomerNumber());
+            item.setCustomerID(FACTORY.createCustomerItemStcCustomerID(customer.getCustomerId()));
             item.setForeNames(FACTORY.createCustomerItemStcForeNames(customer.getForeName()));
             item.setName(FACTORY.createCustomerItemStcName(customer.getSurName()));
             return item;
@@ -339,7 +355,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         });
         customersStc.setCustomerList(customerListStc);
         customers.setCustomersStc(customersStc);
-        WebServiceTemplate template = buildWebServiceTemplate();
+
         CustomersResponse res = (CustomersResponse) template.marshalSendAndReceive(config.getUrl(), customers,
                 new SoapActionCallback("Customer/Customers"));
         CustomersResponseStc innerRes = res.getCustomersResponseStc();
@@ -377,7 +393,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         customerClassificationsStc.setCustomerClassificationList(customerClassificationListStc);
         customerClassifications.setCustomerClassificationsStc(customerClassificationsStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         CustomerClassificationsResponse res = (CustomerClassificationsResponse) template.marshalSendAndReceive(
                 config.getUrl(), customerClassifications,
                 new SoapActionCallback("Customer/CustomerClassifications"));
@@ -410,6 +425,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
             MeterNumberItemStc item = FACTORY.createMeterNumberItemStc();
             item.setPropertyNumber(meterNumber.getPropertyNumber());
             item.setMeterNumber(FACTORY.createMeterNumberItemStcMeterNumber(meterNumber.getMeterNumber()));
+            item.setOldMeterNumber(FACTORY.createMeterNumberItemStcOldMeterNumber(meterNumber.getMeterNumber()));
             item.setIsSmartMeter(FACTORY.createMeterNumberItemStcIsSmartMeter(meterNumber.getIsSmartMeter()));
             return item;
         }).forEachOrdered((item) -> {
@@ -419,13 +435,25 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         meterNumbersStc.setMeterNumberList(meterNumberListStc);
         meterNumbers.setMeterNumbersStc(meterNumbersStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         MeterNumbersResponse res = (MeterNumbersResponse) template.marshalSendAndReceive(
                 config.getUrl(), meterNumbers,
                 new SoapActionCallback("Customer/MeterNumbers"));
         MeterNumbersResponseStc innerRes = res.getMeterNumbersResponseStc();
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
         if (isNotOk(innerRes.getStatus())) {
+            if (innerRes.getStatus() == 2002) {
+                meterNumbersStc.setOperationType("U");
+                res = (MeterNumbersResponse) template.marshalSendAndReceive(
+                        config.getUrl(), meterNumbers,
+                        new SoapActionCallback("Customer/MeterNumbers"));
+                innerRes = res.getMeterNumbersResponseStc();
+                LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+
+                if (isNotOk(innerRes.getStatus())) {
+                    throw new OperationException(innerRes.getTransactionErrors());
+                }
+                return;
+            }
             throw new OperationException(innerRes.getTransactionErrors());
         }
     }
@@ -457,7 +485,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         propertiesStc.setPropertyList(propertyListStc);
         properties.setPropertiesStc(propertiesStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         PropertiesResponse res = (PropertiesResponse) template.marshalSendAndReceive(config.getUrl(), properties,
                 new SoapActionCallback("Customer/Properties"));
 
@@ -497,7 +524,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         propertyClassificationsStc.setPropertyClassificationList(propertyClassificationListStc);
         propertyClassifications.setPropertyClassificationsStc(propertyClassificationsStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         PropertyClassificationsResponse res = (PropertyClassificationsResponse) template.marshalSendAndReceive(config.getUrl(), propertyClassifications,
                 new SoapActionCallback("Customer/PropertyClassifications"));
         PropertyClassificationsResponseStc innerRes = res.getPropertyClassificationsResponseStc();
@@ -554,7 +580,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         telephoneNumbersStc.setTelephoneNumberList(telephoneNumberListStc);
         telephoneNumbers.setTelephoneNumbersStc(telephoneNumbersStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         TelephoneNumbersResponse res = (TelephoneNumbersResponse) template.marshalSendAndReceive(config.getUrl(), telephoneNumbers,
                 new SoapActionCallback("Customer/TelephoneNumbers"));
 
@@ -574,7 +599,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         NetworkPropertyLinks networkPropertyLinks = FACTORY.createNetworkPropertyLinks();
         NetworkPropertyLinksStc networkPropertyLinksStc = FACTORY.createNetworkPropertyLinksStc();
 
-        networkPropertyLinksStc.setOperationType("I");
+        networkPropertyLinksStc.setOperationType(input.get(0).getOperation());
         if (1 == input.size()) {
             networkPropertyLinksStc.setRealTime(FACTORY.createNetworkPropertyLinksStcRealTime(1));
         }
@@ -599,7 +624,6 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         networkPropertyLinksStc.setNetworkPropertyLinkList(networkPropertyLinkListStc);
         networkPropertyLinks.setNetworkPropertyLinksStc(networkPropertyLinksStc);
 
-        WebServiceTemplate template = buildWebServiceTemplate();
         NetworkPropertyLinksResponse res = (NetworkPropertyLinksResponse) template.marshalSendAndReceive(config.getUrl(), networkPropertyLinks,
                 new SoapActionCallback("Customer/NetworkPropertyLinks"));
         NetworkPropertyLinksResponseStc innerRes = res.getNetworkPropertyLinksResponseStc();
@@ -615,7 +639,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
      *
      * @return
      */
-    private WebServiceTemplate buildWebServiceTemplate() {
+    private WebServiceTemplate buildWebServiceTemplate() throws Exception {
         NamespacePrefixMapper mapper = new NamespacePrefixMapper() {
             @Override
             public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
@@ -629,10 +653,65 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
         Jaxb2Marshaller m = new Jaxb2Marshaller();
         m.setMarshallerProperties(props);
         m.setContextPath("poweron.wsdl");
-        WebServiceTemplate template = getWebServiceTemplate();
-        template.setMarshaller(m);
-        template.setUnmarshaller(m);
-        return template;
+
+        WebServiceTemplate wsTemplate = getWebServiceTemplate();
+        wsTemplate.setMarshaller(m);
+        wsTemplate.setUnmarshaller(m);
+
+        if (config.useSSL() && null != config.getTrustStore() && null != config.getTrustStorePassword()) {
+            LOG.info("Application configured with SSL: {}, truststore: {}", config.useSSL(), config.getTrustStore().getFilename());
+            wsTemplate.setMessageSender(httpComponentsMessageSender());
+        }
+
+        return wsTemplate;
+    }
+
+    public HttpComponentsMessageSender httpComponentsMessageSender() throws Exception {
+        HttpComponentsMessageSender httpComponentsMessageSender = new HttpComponentsMessageSender();
+        httpComponentsMessageSender.setHttpClient(httpClient());
+
+        return httpComponentsMessageSender;
+    }
+
+    public HttpClient httpClient() throws Exception {
+        return HttpClientBuilder.create().setSSLSocketFactory(sslConnectionSocketFactory())
+                .addInterceptorFirst(new RemoveSoapHeadersInterceptor()).build();
+    }
+
+    public SSLConnectionSocketFactory sslConnectionSocketFactory() throws Exception {
+        // NoopHostnameVerifier essentially turns hostname verification off as otherwise following error
+        // is thrown: java.security.cert.CertificateException: No name matching localhost found
+        return new SSLConnectionSocketFactory(sslContext(), NoopHostnameVerifier.INSTANCE);
+    }
+
+    public SSLContext sslContext() throws Exception {
+        if (!config.isTrustAll()) {
+            LOG.info("Loading trust material from {}", config.getTrustStore().getURL());
+            return SSLContextBuilder.create()
+                    .loadTrustMaterial(config.getTrustStore().getURL(), config.getTrustStorePassword().toCharArray()).build();
+        }
+        LOG.warn("Application configured with \"Trust all\" SSL manager!");
+        TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @Override
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+
+                @Override
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+            }
+        };
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+        return sc;
     }
 
     /**

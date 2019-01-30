@@ -16,6 +16,9 @@ public class MeterNumber extends SesamEntity{
     
     @JsonProperty("IsSmartMeter")
     private int isSmartMeter;
+    
+    @JsonProperty("NetworkTariff")
+    private String networkTariff;
 
     public MeterNumber() {
         super();
@@ -44,6 +47,16 @@ public class MeterNumber extends SesamEntity{
     public void setIsSmartMeter(int isSmartMeter) {
         this.isSmartMeter = isSmartMeter;
     }
+
+    public String getNetworkTariff() {
+        return networkTariff;
+    }
+
+    public void setNetworkTariff(String networkTariff) {
+        this.networkTariff = networkTariff;
+    }
+    
+    
     
     
     

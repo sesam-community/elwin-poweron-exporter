@@ -427,6 +427,7 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
             item.setMeterNumber(FACTORY.createMeterNumberItemStcMeterNumber(meterNumber.getMeterNumber()));
             item.setOldMeterNumber(FACTORY.createMeterNumberItemStcOldMeterNumber(meterNumber.getMeterNumber()));
             item.setIsSmartMeter(FACTORY.createMeterNumberItemStcIsSmartMeter(meterNumber.getIsSmartMeter()));
+            item.setNetworkTariff(FACTORY.createMeterNumberItemStcNetworkTariff(meterNumber.getNetworkTariff()));
             return item;
         }).forEachOrdered((item) -> {
             meterNumberStcList.add(item);
@@ -630,6 +631,18 @@ public class PowerOnSoapClient extends WebServiceGatewaySupport {
 
         LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
         if (isNotOk(innerRes.getStatus())) {
+            if (innerRes.getStatus() == 2002) {
+                networkPropertyLinksStc.setOperationType("Update");
+                res = (NetworkPropertyLinksResponse) template.marshalSendAndReceive(
+                        config.getUrl(), networkPropertyLinks,
+                        new SoapActionCallback("Customer/NetworkPropertyLinks"));
+                innerRes = res.getNetworkPropertyLinksResponseStc();
+                LOG.info("status: {}, message: {}", innerRes.getStatus(), innerRes.getTransactionErrors());
+                if (isNotOk(innerRes.getStatus())) {
+                    throw new OperationException(innerRes.getTransactionErrors());
+                }
+                return;
+            }
             throw new OperationException(innerRes.getTransactionErrors());
         }
     }

@@ -1,5 +1,7 @@
 # elwin-poweron-exporter
 
+[![Build Status](https://travis-ci.org/sesam-community/elwin-poweron-exporter.svg?branch=master)](https://travis-ci.org/sesam-community/elwin-poweron-exporter)
+
 PowerOn sink service used to move data from Elwin to PowerOn
 
 ## System setup

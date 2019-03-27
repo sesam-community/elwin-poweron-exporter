@@ -3,7 +3,10 @@ language: java
 services:
 - docker
 
-script: mvn  clean package
+before_install:
+  - chmod +x mvnw
+
+script: mvnw clean package
 
 after_success:
 

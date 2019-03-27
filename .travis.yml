@@ -1,0 +1,10 @@
+language: java
+
+services:
+- docker
+
+script: mvn  clean package
+
+after_success:
+
+- bash <(curl -s https://raw.githubusercontent.com/sesam-community/guidelines/master/after_success.sh)

@@ -1,0 +1,4 @@
+  client:
+    ssl:
+        use-ssl: true
+        trust-all: true
